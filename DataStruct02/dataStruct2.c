@@ -17,19 +17,18 @@ void AddNewNode(int age, const char* pszName, const char* pszPhone)
 {
 	USERDATA* pNewNode = (USERDATA*)malloc(sizeof(USERDATA));
 	pNewNode->age = age;
-	//pNewNode->name = pszName; // 좌변은 배열, 우변은 포인터 이므로 스트링 카피를 해야한다.
 	strcpy_s(pNewNode->name, sizeof(pNewNode->name), pszName);
 	strcpy_s(pNewNode->phone, sizeof(pNewNode->phone), pszPhone);
 	pNewNode->pNext = NULL;
 
 	if (g_pHeadNode == NULL) // 아무곳도 안 가리키면
-	{
 		g_pHeadNode = pNewNode;
-	}
-	else // 이미 가리키는 곳이 있다. = 노드가 이미 있다.
+	else // 새 노드 추가하기 (tail node에 추가)
 	{
-		pNewNode->pNext = g_pHeadNode;
-		g_pHeadNode = pNewNode;
+		USERDATA* pTail = g_pHeadNode;
+		while (pTail->pNext != NULL)
+			pTail = pTail->pNext;
+		pTail->pNext = pNewNode;
 	}
 }
 
@@ -62,7 +61,7 @@ void InitDummyData(void)
 
 void PrintList(void)
 {
-	//Print list
+	// Print list
 	USERDATA* pTmp = g_pHeadNode;
 	while (pTmp != NULL)
 	{
